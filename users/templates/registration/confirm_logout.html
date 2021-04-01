@@ -1,0 +1,14 @@
+{% extends 'posts/base.html' %}
+
+
+
+{% block page_header %}
+    <h1 class="display-1 text-muted">Confirm logout</h1>
+{% endblock page_header %}
+    
+
+{% block content %}
+    <p class="mx-2">Are you sure you want to log out?</p> <a class="btn btn-danger mx-2" href=" {% url 'users:logout' %}">Yes Logout</a>
+    <a class="btn btn-success mx-2" href=" {% url 'posts:home' %}">No</a>
+            
+{% endblock content %}

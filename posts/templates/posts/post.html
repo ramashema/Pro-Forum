@@ -1,0 +1,62 @@
+{% extends 'posts/base.html' %}
+
+
+{% block page_header %}
+    <h1 class="display-1 text-muted">Post</h1>
+{% endblock page_header %}
+    
+
+{% block content %}
+    
+    <!-- Display messages when user has successfull delete the comments-->
+    {% if messages %}
+        {% for message in messages %}
+      
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <p class="alert alert-success">{{ message }}</p>
+            {% else %}
+                <p class="alert alert-error">{{ message }}</p>
+            {% endif %}      
+          
+        {% endfor %}
+    {% endif %}
+        
+
+    <h5 class="">{{ forum_post.title }} </h5>
+    <p class="card-text text-muted mb-3">{{ forum_post.body }}</p>
+
+    <h5 class="my-2">Comments
+    {% if user.is_authenticated %}
+        <small ><a class="mx-2 badge badge-light float-right" href="{% url 'posts:new_comment' forum_post.id %}">Add Comment</a></small>
+    {% else %}
+        <small class="mx-2 badge badge-light float-right">Login, to comment</small>
+    {% endif %}
+    </h5>
+    
+    
+
+            {% for post_comment in post_comments %}
+            <div class="card my-2">
+                <div class="card-body">
+
+                    <p class="card-text">{{ post_comment }}</p>
+                    <small class="badge badge-light float-left">{{ post_comment.owner.get_full_name }}</small>
+                    
+
+                    {% if user.is_authenticated %}
+
+                    {% if post_comment.owner == user  %}
+                        <small><a class="badge badge-dark float-right mx-2" href="{% url 'posts:edit_comment' post_comment.id %}">Edit</a></small>
+                        <small><a class="badge badge-danger float-right" href="{% url 'posts:delete_comment' post_comment.id %}">Delete</a></small>
+                    {% endif %}
+                        
+                    {% endif %}
+
+                    <small class="badge badge-light float-right mx-2">{{ post_comment.date_added }}</small>
+                
+                </div>
+            </div>
+
+            {% endfor %}
+    
+{% endblock content %} 

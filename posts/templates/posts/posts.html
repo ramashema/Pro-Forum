@@ -1,0 +1,68 @@
+{% extends 'posts/base.html' %}
+
+
+{% block page_header %}
+    <h1 class="text-muted display-1">Posts</h1>
+{% endblock page_header %}
+    
+
+{% block content %}
+
+    <!--{% if message_success %}
+        <p class="alert alert-success">{{ message_success }}</p>
+    {% endif %}
+
+    {% if message_error %}
+        <p class="alert alert-error">{{ message_error }}</p>
+    {% endif %}-->
+
+    {% if messages %}
+    
+            {% for message in messages  %}
+                
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <p class="alert alert-success">{{ message }}</p>
+                {% else %}
+                    <p class="alert alert-error">{{ message }}</p>
+                {% endif %}
+                
+            {% endfor %}
+
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <p><a href="{% url 'posts:new_post' %}" class="badge badge-dark">Add new post</a></p>
+    {% endif %}
+
+    {% for forum_post in forum_posts %}
+        <div class="card border-secondary mb-3">
+            <div class="card-body text-secondary">
+                <h5 class="card-title"><a href="{% url 'posts:post' forum_post.id %}" > {{ forum_post.title }}</a></h5>
+                    {% if user.is_authenticated %}
+                        {% if forum_post.owner == user %}
+                            <a class="float-right badge badge-dark mx-2" href="{% url 'posts:edit_post' forum_post.id %}">Edit</a> 
+                            <a class="float-right badge badge-danger" href="{% url 'posts:delete_post' forum_post.id %}">Delete</a> 
+                        {% endif %}
+                    {% endif %} 
+               
+                <p class="card-text">{{ forum_post.body }}</p>
+            </div>
+
+            <div class="card-footer">
+                <small class="badge badge-secondary">{{ forum_post.owner.get_full_name }}</small>&nbsp;&nbsp;
+                
+                
+                
+                {% if forum_post.comment_set.count > 0 %}
+                    |&nbsp;&nbsp;<small><span class="badge badge-info">{{ forum_post.comment_set.count }}</span> Comments</small>
+                {% endif %}
+                    
+                
+                
+                
+                <small class="float-right"> {{ forum_post.date_added|date:'M d, Y H:i' }}</small>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock content %}

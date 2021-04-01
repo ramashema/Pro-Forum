@@ -1,0 +1,22 @@
+{% extends "posts/base.html" %}
+
+{% load bootstrap4 %}
+
+
+{% block page_header %}
+    <h1 class="display-1 text-muted">Edit Comment</h1>
+{% endblock page_header %}
+    
+{% block content %}
+    <h4 class="my-3"><a href="{% url 'posts:post' post.id %}">{{ post }}</a></h4>
+    
+    <form action="{% url 'posts:edit_comment' comment.id %}" method="POST" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+        {% buttons %}
+            <button class="btn btn-dark" name="submit">Update comment</button>
+        {% endbuttons %}
+        
+    </form>
+{% endblock content %}

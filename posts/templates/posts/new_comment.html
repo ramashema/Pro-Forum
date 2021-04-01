@@ -1,0 +1,22 @@
+{% extends "posts/base.html" %}
+
+{% load bootstrap4 %}
+
+
+{% block page_header %}
+    <h1 class="display-1 text-muted my-2">Add Comment</h1>
+{% endblock page_header %}
+    
+
+{% block content %}
+    <h4 class="my-3"><a href="{% url 'posts:post' post.id %}">{{ post.title }}</a></h4>
+    
+    <form action="{% url 'posts:new_comment' post.id %}" method="post" clas="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button class="btn btn-dark" name="submit">Add comment</button>
+        {% endbuttons %}
+        
+    </form>
+{% endblock content %}
